@@ -26,4 +26,4 @@ public class bj_2292_벌집 {
 		System.out.println(cnt);
 	}
 
-}
+} 
