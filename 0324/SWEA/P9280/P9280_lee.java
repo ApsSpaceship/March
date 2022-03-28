@@ -1,11 +1,6 @@
-package com.ssafy.swea;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class P9280 {
 
@@ -41,29 +36,21 @@ public class P9280 {
 			int idx = 1;
 			// 차량 입장 순서
 			int[] carIn = new int[m+1];
+			// 대기 리스트
 			Queue<Integer> waitList = new LinkedList<>();
+			// 대기 리스트 유무
 			boolean isWaiting = false;
 			for(int i =0; i < cnt; i++) {
 				// 입차
 				if(x[i] > 0) {
 					// 만석이었을 경우
-					if(isWaiting) {
-						// 대기 리스트부터 순차 입장
-						for(int j = 0; j < waitList.size(); j++) {
-							room : for(int k = 1; k <= n; k++) {
-								if(currN[k] == 0) {
-									carIn[idx] = waitList.poll();
-									cost[idx++] = k;
-									currN[k] = 1;
-									break room;
-								}else if(currN[k] == 1 && k == n) {
-									isFull = true;
-								}
-							}
-						}
-						// 대기 리스트가 입장 완료했으면 만석 끝
-						if(waitList.size() == 0) isWaiting = false;
-					}else {
+					if(isFull) {
+						// 대기리스트에 차량번호 추가
+						waitList.offer(x[i]);
+						isWaiting = true;
+					}
+					else {
+						// 만석아닌 경우,
 						room : for(int j = 1; j <= n; j++) {
 							if(currN[j] == 0) {
 								// 차량 입장 순서 저장(차량 번호 저장)
@@ -91,18 +78,46 @@ public class P9280 {
 					int roomIdx = 0;
 					for(int j =1; j <= m; j++) {
 						if(carIn[j] == Math.abs(x[i])) {
-							roomIdx = j;
+							roomIdx = cost[j];
 							break;
 						}
 					}
 					// 해당 방 비우기
 					currN[roomIdx] = 0;
+					// 방이 비워졌으니 만석이 아니다.
 					isFull = false;
+					// 대기리스트가 있을 경우
+					if(isWaiting) {
+						// 대기 리스트부터 순차 입장
+						for(int j = 0; j < waitList.size(); j++) {
+							room : for(int k = 1; k <= n; k++) {
+								if(currN[k] == 0) {
+									carIn[idx] = waitList.poll();
+									cost[idx++] = k;
+									currN[k] = 1;
+									break room;
+								}else if(currN[k] == 1 && k == n) {
+									// 빈자리가 없음을 확인 후 만석표시
+									isFull = true;
+								}
+							}
+							if(isFull) break;
+						}
+						// 대기 리스트가 입장 완료했으면 대기리스트 없음 표시
+						if(waitList.size() == 0) {
+							isWaiting = false;
+						}
+					}
 				}
 			}
 			// 요금 계산
-
+			int ans = 0;
+			for(int i = 1; i<= m; i++) {
+				// 주차장 번호 별 단위 무게 * 자동차 번호 별 무게
+				ans += r[cost[i]] * w[carIn[i]];
+			}
+			System.out.println("#"+tc+" "+ans);
 		}
+		sc.close();
 	}
-
 }
