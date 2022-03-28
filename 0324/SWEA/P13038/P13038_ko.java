@@ -18,8 +18,7 @@ public class SWEA_13038_교환학생 {
 			int min = 7000000;
 
 			for (int i = 0; i < size; i++) { // - 맨 첫 요일 앞 일 수 + 7로 떨어지는 날짜 수 + 남은 요일 수
-				int last = (list.get((n + i - 1) % size)); //남은 요일 수
-				ans = -(list.get(i) - 1) + ((n + i - 1) / size) * 7 + last;
+				ans = -(list.get(i) - 1) + ((n + i - 1) / size) * 7 + (list.get((n + i - 1) % size));
 				min = Math.min(min, ans);
 			}
 
