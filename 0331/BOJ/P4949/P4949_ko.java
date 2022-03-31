@@ -24,8 +24,8 @@ public class BOJ_4949_균형잡힌세상 {
 			}
 			if(!stack.isEmpty()) // 스택이 비어있지 않다면
 				ans = "no";
+			
 			System.out.println(ans);
-
 		}
 	}
 
