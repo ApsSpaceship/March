@@ -13,8 +13,9 @@ public class P4949 {
 			arr.add(str);
 		}
 		char[] cArr;
-		boolean flag = true;
+		
 		for(int i =0; i < arr.size(); i++) {
+           		boolean flag = true;
 			stack = new Stack<>();
 			cArr = arr.get(i).toCharArray();
 			for(int j = 0; j < cArr.length; j++) {
@@ -33,6 +34,7 @@ public class P4949 {
 					flag = remove(c);
 					break;
 				}
+                		if(!flag) break;
 			}
 			if(!stack.empty()) flag = false;
 			if(flag) System.out.println("yes");
